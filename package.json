@@ -1,0 +1,19 @@
+{
+  "name": "taskmanager-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Root workspace runner for Rwanda Task Management System (backend + frontend)",
+  "scripts": {
+    "start": "npm --prefix taskmanager-backend-main run start",
+    "dev": "npm --prefix taskmanager-backend-main run dev",
+    "dev:backend": "npm --prefix taskmanager-backend-main run dev",
+    "dev:frontend": "npm --prefix taskmanager-frontend-main run dev",
+    "build": "npm --prefix taskmanager-frontend-main run build",
+    "preview": "npm --prefix taskmanager-frontend-main run preview",
+    "seed": "npm --prefix taskmanager-backend-main run seed",
+    "email:check": "npm --prefix taskmanager-backend-main run email:check",
+    "migrate": "npm --prefix taskmanager-backend-main run migrate",
+    "migrate:undo": "npm --prefix taskmanager-backend-main run migrate:undo",
+    "migrate:emails": "npm --prefix taskmanager-backend-main run migrate:emails"
+  }
+}

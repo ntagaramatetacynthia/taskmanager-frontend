@@ -1,0 +1,432 @@
+{
+  "info": {
+    "name": "Rwanda Task Management System API",
+    "description": "Comprehensive API collection for testing the Rwanda Task Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "organizationId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "District Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin.kigali@gov.rw\",\n  \"password\": \"Admin123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/district-admin/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "district-admin", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('token', response.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "User Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Organization Code Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organization_code\": \"RW123456\",\n  \"student_id\": \"STD001\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/organization-login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "organization-login"]
+            }
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "profile"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Organizations",
+      "item": [
+        {
+          "name": "Get Districts",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/organizations/districts",
+              "host": ["{{baseUrl}}"],
+              "path": ["organizations", "districts"]
+            }
+          }
+        },
+        {
+          "name": "Register Organization",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test School\",\n  \"type\": \"school\",\n  \"district_id\": 1,\n  \"contact_email\": \"admin@testschool.rw\",\n  \"contact_phone\": \"+250788123456\",\n  \"address\": \"Kigali, Rwanda\",\n  \"subscription_type\": \"monthly\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/organizations/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["organizations", "register"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('organizationId', response.data.organization.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Check Organization Code",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/organizations/check-code/RW123456",
+              "host": ["{{baseUrl}}"],
+              "path": ["organizations", "check-code", "RW123456"]
+            }
+          }
+        },
+        {
+          "name": "Get Organization Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/organizations/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["organizations", "profile"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "District Administration",
+      "item": [
+        {
+          "name": "Get Pending Organizations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/district/organizations/pending",
+              "host": ["{{baseUrl}}"],
+              "path": ["district", "organizations", "pending"]
+            }
+          }
+        },
+        {
+          "name": "Approve Organization",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"approved\",\n  \"approval_notes\": \"Organization meets all requirements\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/district/organizations/approve/{{organizationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["district", "organizations", "approve", "{{organizationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Reject Organization",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"rejected\",\n  \"rejection_reason\": \"Incomplete documentation\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/district/organizations/reject/{{organizationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["district", "organizations", "reject", "{{organizationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get District Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/district/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["district", "stats"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@testschool.rw\",\n  \"password\": \"password123\",\n  \"phone\": \"+250788123456\",\n  \"role\": \"teacher\",\n  \"employee_id\": \"EMP001\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Get Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Classes",
+      "item": [
+        {
+          "name": "Create Class",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Mathematics Grade 10\",\n  \"code\": \"MATH10\",\n  \"description\": \"Advanced mathematics for grade 10 students\",\n  \"manager_id\": 1,\n  \"type\": \"class\",\n  \"academic_year\": \"2024-2025\",\n  \"semester\": \"1\",\n  \"max_students\": 30\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/classes",
+              "host": ["{{baseUrl}}"],
+              "path": ["classes"]
+            }
+          }
+        },
+        {
+          "name": "Get Classes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/classes",
+              "host": ["{{baseUrl}}"],
+              "path": ["classes"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "Create Task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Algebra Assignment 1\",\n  \"description\": \"Solve the given algebraic equations\",\n  \"instructions\": \"Show all working steps clearly\",\n  \"due_date\": \"2024-02-15T23:59:59Z\",\n  \"class_id\": 1,\n  \"priority\": \"medium\",\n  \"type\": \"assignment\",\n  \"max_score\": 100,\n  \"submission_type\": \"both\",\n  \"late_submission_allowed\": true,\n  \"late_penalty_percentage\": 10\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tasks",
+              "host": ["{{baseUrl}}"],
+              "path": ["tasks"]
+            }
+          }
+        },
+        {
+          "name": "Get Tasks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tasks",
+              "host": ["{{baseUrl}}"],
+              "path": ["tasks"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

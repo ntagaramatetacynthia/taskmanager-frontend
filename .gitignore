@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+*/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment & local secret files (keep example configs)
+.env
+.env*.local
+.env.production
+.env.staging
+*.env
+!.env.example
+!*/.env.example
+
+# Local SQLite databases & cache
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+task_management.db
+taskmanager-backend-main/task_management.db
+
+# User uploads & generated files
+uploads/
+*/uploads/*
+!*/uploads/.gitkeep
+
+# Production & build outputs
+dist/
+*/dist/
+build/
+*/build/
+out/
+.next/
+
+# IDE & Editor artifacts
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.kombai/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Logs & temp files
+logs/
+*.log
+tmp/
+temp/

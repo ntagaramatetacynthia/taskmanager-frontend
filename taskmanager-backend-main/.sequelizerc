@@ -1,0 +1,16 @@
+{
+  "development": {
+    "username": "root",
+    "password": "your_password",
+    "database": "rwanda_task_management",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "your_password",
+    "database": "rwanda_task_management",
+    "host": "localhost",
+    "dialect": "mysql"
+  }
+}
