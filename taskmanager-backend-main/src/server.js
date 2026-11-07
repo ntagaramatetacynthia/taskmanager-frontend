@@ -45,42 +45,59 @@ app.use(generalLimiter);
 
 // CORS configuration
 const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',')
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
   : [
       'http://localhost:3000',
       'http://localhost:3001',
+      'http://localhost:5173',
+      'http://localhost:5174',
+      'http://localhost:5175',
+      'http://localhost:5176',
       'https://taskmanager-frontend-wbwa.onrender.com',
-    ]
+    ];
 
-app.use(cors({
-  // Allow requests from allowed origins OR localhost (dev)
+const isOriginAllowed = (origin) => {
+  if (!origin) return true; // Allow non-browser requests (Postman, mobile, server-to-server)
+  // Always allow local development ports
+  if (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:')) {
+    return true;
+  }
+  // Explicitly configured origins
+  if (allowedOrigins.includes(origin)) {
+    return true;
+  }
+  // Allow all Render, Vercel, and Netlify deployments
+  try {
+    const hostname = new URL(origin).hostname;
+    if (
+      hostname.endsWith('.onrender.com') ||
+      hostname.endsWith('.vercel.app') ||
+      hostname.endsWith('.netlify.app')
+    ) {
+      return true;
+    }
+  } catch (e) {
+    return false;
+  }
+  return false;
+};
+
+const corsOptions = {
   origin: (origin, cb) => {
-    // Allow requests with no origin (mobile apps, Postman, etc.)
-    if (!origin) return cb(null, true)
-
-    // Always allow local dev
-    if (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:')) {
-      return cb(null, true)
+    if (isOriginAllowed(origin)) {
+      return cb(null, true);
     }
-
-    if (!allowedOrigins.includes(origin)) {
-      return cb(new Error('Not allowed by CORS'))
-    }
-
-    return cb(null, true)
+    // Safely disallow without crashing preflight or throwing unhandled 500
+    return cb(null, false);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  // Ensure CORS headers are returned even for preflight.
-  // Some proxy setups require an explicit success for OPTIONS.
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   optionsSuccessStatus: 204,
-}));
+};
 
-// Explicitly handle CORS preflight.
-app.options('*', (req, res) => {
-  res.sendStatus(204);
-});
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 
 

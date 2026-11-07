@@ -6,7 +6,10 @@
  * this way were 404s. Everything goes through axios + a Blob URL instead.
  */
 
-const API_ORIGIN = (import.meta.env.VITE_API_URL || 'https://taskmanager-backend-1-9yaq.onrender.com').replace(/\/+$/, '')
+const API_ORIGIN = (
+  import.meta.env.VITE_API_URL ||
+  (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:3000' : '')
+).replace(/\/+$/, '')
 
 /** Absolute URL for a legacy stored path such as "/uploads/submissions/abc.pdf". */
 export function absoluteFileUrl(path) {

@@ -3,13 +3,24 @@ import axios from 'axios'
 // Parent portal API. Deliberately a SEPARATE axios instance from services/api.js:
 //  - it carries the parent token (signed with PARENT_JWT_SECRET), never the staff token
 //  - its 401 handling only clears the parent session, not the whole localStorage
-const BASE_URL = import.meta.env.VITE_API_URL || 'https://taskmanager-backend-1-9yaq.onrender.com'
+const getBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL
+  if (envUrl && typeof envUrl === 'string' && envUrl.trim()) {
+    return envUrl.trim().replace(/\/api\/?$/, '')
+  }
+  if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+    return 'http://localhost:3000'
+  }
+  return ''
+}
+
+const BASE_URL = getBaseUrl()
 
 export const PARENT_TOKEN_KEY = 'parentToken'
 export const PARENT_INFO_KEY  = 'parentInfo'
 
 const parentApi = axios.create({
-  baseURL: `${BASE_URL}/api/parent`,
+  baseURL: BASE_URL ? `${BASE_URL}/api/parent` : '/api/parent',
   headers: { 'Content-Type': 'application/json' },
   timeout: 30000,
 })
