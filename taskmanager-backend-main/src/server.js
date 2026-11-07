@@ -111,6 +111,20 @@ app.use((req, res, next) => {
   next();
 });
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Rwanda Task Management System API is running',
+    environment: process.env.NODE_ENV,
+    endpoints: {
+      health: '/health',
+      auth: '/api/auth',
+      parent: '/api/parent',
+    }
+  });
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({

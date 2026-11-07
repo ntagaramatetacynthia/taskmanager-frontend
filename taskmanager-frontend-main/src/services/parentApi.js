@@ -11,7 +11,7 @@ const getBaseUrl = () => {
   if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
     return 'http://localhost:3000'
   }
-  return ''
+  return 'https://taskmanager-frontend-1-vzke.onrender.com'
 }
 
 const BASE_URL = getBaseUrl()
