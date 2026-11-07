@@ -1,0 +1,9 @@
+node_modules/
+.env
+uploads/
+*.mjs.bak
+check-db.mjs
+diagnose.mjs
+health-check.mjs
+fix-*.mjs
+test-*.mjs
