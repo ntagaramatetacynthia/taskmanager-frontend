@@ -1,13 +1,24 @@
 import axios from 'axios'
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'https://taskmanager-backend-1-9yaq.onrender.com'
+const getBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL
+  if (envUrl && typeof envUrl === 'string' && envUrl.trim()) {
+    return envUrl.trim().replace(/\/api\/?$/, '')
+  }
+  if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+    return 'http://localhost:3000'
+  }
+  return ''
+}
+
+const BASE_URL = getBaseUrl()
 
 // The backend runs on a free Render instance that spins down when idle and needs
 // ~50s to cold start, so auth calls wait longer than regular requests.
 const AUTH_TIMEOUT = 90000
 
 const api = axios.create({
-  baseURL: `${BASE_URL}/api`,
+  baseURL: BASE_URL ? `${BASE_URL}/api` : '/api',
   headers: { 'Content-Type': 'application/json' },
   timeout: 30000,
 })
