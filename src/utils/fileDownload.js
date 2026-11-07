@@ -8,7 +8,9 @@
 
 const API_ORIGIN = (
   import.meta.env.VITE_API_URL ||
-  (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:3000' : '')
+  (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:3000'
+    : 'https://taskmanager-frontend-1-vzke.onrender.com')
 ).replace(/\/+$/, '')
 
 /** Absolute URL for a legacy stored path such as "/uploads/submissions/abc.pdf". */
