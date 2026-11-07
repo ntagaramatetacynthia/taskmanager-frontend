@@ -1,0 +1,193 @@
+/*
+ * Scoped styles for the worksheet viewer. Every selector is prefixed `xlpv` so nothing
+ * here can leak into the existing RTMS surfaces. Palette matches tailwind.config.js:
+ * primary-900 #1e3a8a, gov-gold #D97706, gray borders #e5e7eb.
+ */
+
+.xlpv {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.xlpv__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.xlpv__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: #1e3a8a;
+  flex-shrink: 0;
+}
+
+.xlpv__titleWrap {
+  min-width: 0;
+  flex: 1;
+}
+
+.xlpv__title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #111827;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.xlpv__sub {
+  margin: 1px 0 0;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.xlpv__download {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.xlpv__tabs {
+  display: flex;
+  gap: 4px;
+  padding: 6px 10px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fff;
+  overflow-x: auto;
+}
+
+.xlpv__tab {
+  border: 1px solid transparent;
+  background: #f3f4f6;
+  color: #4b5563;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 5px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.xlpv__tab:hover {
+  background: #e5e7eb;
+}
+
+.xlpv__tab--active {
+  background: #1e3a8a;
+  color: #ffffff;
+  border-color: #1e3a8a;
+}
+
+.xlpv__state {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 12px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.xlpv__state--error {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.xlpv__scroll {
+  max-height: 380px;
+  overflow: auto;
+  overflow-x: auto;
+  background: #ffffff;
+}
+
+.xlpv__table {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 11px;
+  color: #1f2937;
+  font-variant-numeric: tabular-nums;
+  min-width: 100%;
+}
+
+.xlpv__corner,
+.xlpv__colHead {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: #f3f4f6;
+  color: #6b7280;
+  font-weight: 600;
+  font-size: 10px;
+  text-align: center;
+  padding: 3px 8px;
+  border-bottom: 1px solid #e5e7eb;
+  border-right: 1px solid #eef0f3;
+  min-width: 78px;
+}
+
+.xlpv__corner {
+  left: 0;
+  z-index: 4;
+  min-width: 38px;
+  width: 38px;
+}
+
+.xlpv__rowHead {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: #f3f4f6;
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 10px;
+  text-align: center;
+  padding: 3px 6px;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #f1f3f6;
+  width: 38px;
+}
+
+.xlpv__cell {
+  padding: 3px 8px;
+  border-right: 1px solid #f1f3f6;
+  border-bottom: 1px solid #f1f3f6;
+  white-space: pre;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: #ffffff;
+}
+
+.xlpv__cell:empty::after {
+  content: '';
+}
+
+.xlpv__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 12px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+  font-size: 10.5px;
+  color: #6b7280;
+}
+
+@media (max-width: 640px) {
+  .xlpv__foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
